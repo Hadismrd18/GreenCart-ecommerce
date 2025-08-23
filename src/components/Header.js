@@ -5,6 +5,7 @@ import { motion, AnimatePresence, easeInOut } from "framer-motion";
 import { Menu, X, ArrowRight, Zap, Search } from "lucide-react";
 import Link from "next/link";
 import { assets } from "../assets/assets";
+import { usePathname } from "next/navigation";
 const navItems = [
   { name: "Home", href: "/" },
   { name: "All Products", href: "/features" },
@@ -65,76 +66,50 @@ export default function Header2() {
     open: { opacity: 1, x: 0 },
   };
 
+  const path = usePathname().split("/");
+  console.log(path);
   return (
     <>
-      <motion.header
-        className={`bg-white fixed top-0 right-0 left-0 z-50 transition-all duration-500 ${
-          isScrolled
-            ? "border-border/50 bg-background/80 border-b shadow-sm backdrop-blur-md"
-            : "bg-transparent"
-        } border-b-2`}
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            <motion.div
-              className=" flex items-center space-x-3"
-              variants={itemVariants}
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            >
-              <Link
-                prefetch={false}
-                href="/"
-                className="flex items-center space-x-3"
-              >
-                <div className="relative">
-                  <img src={assets.logo.src} alt="logo" />
-                </div>
-              </Link>
-            </motion.div>
-
-            <nav className="hidden items-center space-x-1 lg:flex">
-              <motion.div className="relative ">
-                <Link
-                  prefetch={false}
-                  href="/seller"
-                  className=" text-foreground/80 hover:text-foreground relative rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200"
-                >
-                  <motion.div
-                    className="bg-white border-2 border-gray-100 absolute inset-0 rounded-full"
-                    layoutId="navbar-hover"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 400,
-                      damping: 30,
-                    }}
-                  />
-
-                  <span className="relative z-10">Seller dashboard</span>
-                </Link>
-              </motion.div>
-              {navItems.map((item) => (
+      {path[1] !== "seller" ? (
+        <>
+          <motion.header
+            className={`bg-white fixed top-0 right-0 left-0 z-50 transition-all duration-500 ${
+              isScrolled
+                ? "border-border/50 bg-background/80 border-b shadow-sm backdrop-blur-md"
+                : "bg-transparent"
+            } border-b-2`}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+              <div className="flex h-16 items-center justify-between">
                 <motion.div
-                  key={item.name}
+                  className=" flex items-center space-x-3"
                   variants={itemVariants}
-                  className="relative"
-                  onMouseEnter={() => setHoveredItem(item.name)}
-                  onMouseLeave={() => setHoveredItem(null)}
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
                 >
                   <Link
                     prefetch={false}
-                    href={item.href}
-                    className="text-foreground/80 hover:text-foreground relative rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200"
+                    href="/"
+                    className="flex items-center space-x-3"
                   >
-                    {hoveredItem === item.name && (
+                    <div className="relative">
+                      <img src={assets.logo.src} alt="logo" />
+                    </div>
+                  </Link>
+                </motion.div>
+
+                <nav className="hidden items-center space-x-1 lg:flex">
+                  <motion.div className="relative ">
+                    <Link
+                      prefetch={false}
+                      href="/seller"
+                      className=" text-foreground/80 hover:text-foreground relative rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200"
+                    >
                       <motion.div
-                        className="bg-muted absolute inset-0 rounded-lg"
+                        className="bg-white border-2 border-gray-100 absolute inset-0 rounded-full"
                         layoutId="navbar-hover"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -145,114 +120,154 @@ export default function Header2() {
                           damping: 30,
                         }}
                       />
-                    )}
-                    <span className="relative z-10">{item.name}</span>
-                  </Link>
-                </motion.div>
-              ))}
-            </nav>
 
-            <motion.div
-              className="hidden items-center space-x-3 lg:flex"
-              variants={itemVariants}
-            >
-              <motion.button
-                className="text-muted-foreground hover:bg-muted hover:text-foreground rounded-lg p-2 transition-colors duration-200"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Search className="h-5 w-5" />
-              </motion.button>
-
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex items-center justify-center gap-5"
-              >
-                <Link href="/cart">
-                  <img src={assets.nav_cart_icon.src} className="w-5 h-5" />
-                </Link>
-                <Link
-                  prefetch={false}
-                  href="/login"
-                  className="bg-[#4fbf8b] text-background hover:bg-[#44ae7c] inline-flex items-center space-x-2 rounded-full px-5 py-2.5 text-sm font-medium shadow-sm transition-all duration-200"
-                >
-                  <span>Login</span>
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </motion.div>
-            </motion.div>
-
-            <motion.button
-              className="text-foreground hover:bg-muted rounded-lg p-2 transition-colors duration-200 lg:hidden"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              variants={itemVariants}
-              whileTap={{ scale: 0.95 }}
-            >
-              {isMobileMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </motion.button>
-          </div>
-        </div>
-      </motion.header>
-
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <>
-            <motion.div
-              className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm lg:hidden"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsMobileMenuOpen(false)}
-            />
-            <motion.div
-              className="border-border bg-background fixed top-16 right-4 z-50 w-80 overflow-hidden rounded-2xl border shadow-2xl lg:hidden"
-              variants={mobileMenuVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-            >
-              <div className="space-y-6 p-6">
-                <div className="space-y-1">
+                      <span className="relative z-10">Seller dashboard</span>
+                    </Link>
+                  </motion.div>
                   {navItems.map((item) => (
-                    <motion.div key={item.name} variants={mobileItemVariants}>
+                    <motion.div
+                      key={item.name}
+                      variants={itemVariants}
+                      className="relative"
+                      onMouseEnter={() => setHoveredItem(item.name)}
+                      onMouseLeave={() => setHoveredItem(null)}
+                    >
                       <Link
                         prefetch={false}
                         href={item.href}
-                        className="text-foreground hover:bg-muted block rounded-lg px-4 py-3 font-medium transition-colors duration-200"
-                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="text-foreground/80 hover:text-foreground relative rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200"
                       >
-                        {item.name}
+                        {hoveredItem === item.name && (
+                          <motion.div
+                            className="bg-muted absolute inset-0 rounded-lg"
+                            layoutId="navbar-hover"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{
+                              type: "spring",
+                              stiffness: 400,
+                              damping: 30,
+                            }}
+                          />
+                        )}
+                        <span className="relative z-10">{item.name}</span>
                       </Link>
                     </motion.div>
                   ))}
-                </div>
+                </nav>
 
                 <motion.div
-                  className="border-border space-y-3 border-t pt-6 flex flex-col items-center"
-                  variants={mobileItemVariants}
+                  className="hidden items-center space-x-3 lg:flex"
+                  variants={itemVariants}
                 >
-                  <Link href="/cart">
-                    <img src={assets.nav_cart_icon.src} className="w-5 h-5" />
-                  </Link>
-                  <Link
-                    prefetch={false}
-                    href="/signup"
-                    className="bg-[#4fbf8b] text-background hover:bg-[#44ae7c] block w-full rounded-full py-3 text-center font-medium transition-all duration-200"
-                    onClick={() => setIsMobileMenuOpen(false)}
+                  <motion.button
+                    className="text-muted-foreground hover:bg-muted hover:text-foreground rounded-lg p-2 transition-colors duration-200"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
-                    Login
-                  </Link>
+                    <Search className="h-5 w-5" />
+                  </motion.button>
+
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="flex items-center justify-center gap-5"
+                  >
+                    <Link href="/cart">
+                      <img src={assets.nav_cart_icon.src} className="w-5 h-5" />
+                    </Link>
+                    <Link
+                      prefetch={false}
+                      href="/login"
+                      className="bg-[#4fbf8b] text-background hover:bg-[#44ae7c] inline-flex items-center space-x-2 rounded-full px-5 py-2.5 text-sm font-medium shadow-sm transition-all duration-200"
+                    >
+                      <span>Login</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </motion.div>
                 </motion.div>
+
+                <motion.button
+                  className="text-foreground hover:bg-muted rounded-lg p-2 transition-colors duration-200 lg:hidden"
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  variants={itemVariants}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {isMobileMenuOpen ? (
+                    <X className="h-6 w-6" />
+                  ) : (
+                    <Menu className="h-6 w-6" />
+                  )}
+                </motion.button>
               </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+            </div>
+          </motion.header>
+
+          <AnimatePresence>
+            {isMobileMenuOpen && (
+              <>
+                <motion.div
+                  className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm lg:hidden"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                />
+                <motion.div
+                  className="border-border bg-background fixed top-16 right-4 z-50 w-80 overflow-hidden rounded-2xl border shadow-2xl lg:hidden"
+                  variants={mobileMenuVariants}
+                  initial="closed"
+                  animate="open"
+                  exit="closed"
+                >
+                  <div className="space-y-6 p-6">
+                    <div className="space-y-1">
+                      {navItems.map((item) => (
+                        <motion.div
+                          key={item.name}
+                          variants={mobileItemVariants}
+                        >
+                          <Link
+                            prefetch={false}
+                            href={item.href}
+                            className="text-foreground hover:bg-muted block rounded-lg px-4 py-3 font-medium transition-colors duration-200"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                          >
+                            {item.name}
+                          </Link>
+                        </motion.div>
+                      ))}
+                    </div>
+
+                    <motion.div
+                      className="border-border space-y-3 border-t pt-6 flex flex-col items-center"
+                      variants={mobileItemVariants}
+                    >
+                      <Link href="/cart">
+                        <img
+                          src={assets.nav_cart_icon.src}
+                          className="w-5 h-5"
+                        />
+                      </Link>
+                      <Link
+                        prefetch={false}
+                        href="/signup"
+                        className="bg-[#4fbf8b] text-background hover:bg-[#44ae7c] block w-full rounded-full py-3 text-center font-medium transition-all duration-200"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        Login
+                      </Link>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

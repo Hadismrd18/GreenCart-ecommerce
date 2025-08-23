@@ -1,3 +1,4 @@
+"use client";
 import { assets } from "@/assets/assets";
 import {
   Dribbble,
@@ -10,6 +11,7 @@ import {
   Twitter,
 } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const data = {
   facebookLink: "https://facebook.com/GreenCart",
@@ -68,8 +70,7 @@ const helpfulLinks = [
   { text: "Best Sellers", href: "/" },
   { text: "Offers and Deals", href: "/" },
   { text: "Contact us", href: "/" },
-  { text: "FAQs", href: "/"},
-
+  { text: "FAQs", href: "/" },
 ];
 
 const contactInfo = [
@@ -78,8 +79,12 @@ const contactInfo = [
   { icon: MapPin, text: data.contact.address, isAddress: true },
 ];
 
+
 export default function Footer4Col() {
-  return (
+
+  const path = usePathname().split("/"); 
+  
+  return path[1] !== "seller" ? (
     <footer className="bg-[#4fbf8b17] dark:bg-secondary/20 mt-16 w-full place-self-end rounded-t-xl">
       <div className="mx-auto max-w-screen-xl px-4 pt-16 pb-6 sm:px-6 lg:px-8 lg:pt-24">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
@@ -211,5 +216,7 @@ export default function Footer4Col() {
         </div>
       </div>
     </footer>
+  ) : (
+    <></>
   );
 }

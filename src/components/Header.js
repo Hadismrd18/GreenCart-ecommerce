@@ -8,7 +8,7 @@ import { assets } from "../assets/assets";
 import { usePathname } from "next/navigation";
 const navItems = [
   { name: "Home", href: "/" },
-  { name: "All Products", href: "/features" },
+  { name: "All Products", href: "/products" },
 ];
 
 export default function Header2() {

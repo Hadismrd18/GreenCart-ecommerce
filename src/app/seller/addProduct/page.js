@@ -1,20 +1,25 @@
-import React from 'react'
+import { assets } from "@/assets/assets";
+import React from "react";
 
+const categories = [
+  "vegetables",
+  "fruits",
+  "drinks",
+  "instant",
+  "dairy",
+  "bakery",
+  "grains",
+];
 function page() {
   return (
-    <main className="min-h-screen bg-white flex items-center justify-center p-6">
-      <div className="w-full max-w-2xl bg-white rounded-l p-6">
+    <main className="md:w-1/2 w-full min-h-screen bg-white flex items-center justify-center p-2">
+      <div className="w-full max-w-2xl bg-white rounded-l">
         {/* Product Images */}
         <div className="mb-6">
           <label className="block font-semibold mb-2">Product Image</label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className="bg-gray-200 border border-dashed border-gray-400 rounded-lg h-24 flex items-center justify-center text-sm text-gray-500"
-              >
-                Upload
-              </div>
+              <img key={i} src={assets.upload_area.src} />
             ))}
           </div>
         </div>
@@ -31,7 +36,9 @@ function page() {
 
         {/* Product Description */}
         <div className="mb-6">
-          <label className="block font-semibold mb-2">Product Description</label>
+          <label className="block font-semibold mb-2">
+            Product Description
+          </label>
           <textarea
             placeholder="Type here"
             className="w-full border border-gray-300 rounded-md p-3 h-28 resize-none focus:outline-none"
@@ -43,6 +50,9 @@ function page() {
           <label className="block font-semibold mb-2">Category</label>
           <select className="w-full border border-gray-300 rounded-md p-3 focus:outline-none">
             <option>Select Category</option>
+            {categories.map((item, index) => (
+              <option key={index}>{item}</option>
+            ))}
           </select>
         </div>
 
@@ -72,7 +82,7 @@ function page() {
         </button>
       </div>
     </main>
-  )
+  );
 }
 
-export default page
+export default page;

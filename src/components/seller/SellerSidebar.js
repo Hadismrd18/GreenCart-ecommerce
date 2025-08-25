@@ -58,17 +58,14 @@ export const SellerSidebar = memo(() => {
   const { theme, setTheme } = useTheme();
 
   return (
-    <Sidebar collapsible="icon" className="bg-[#4fbf8b]">
+    <Sidebar collapsible="icon" className="bg-[#4fbf8b12]">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <Link prefetch={false} className="flex flex-col items-start" href="#dashboard">
+              <Link prefetch={false} className="hover:bg-none flex flex-col items-start" href="/seller">
                 <div>
                   <img src={assets.logo.src} />
-                </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate text-xs text-gray-600">Seller Panel</span>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -99,26 +96,7 @@ export const SellerSidebar = memo(() => {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            >
-              {theme === "dark" ? <Sun /> : <Moon />}
-              <span>{theme === "dark" ? "Light Mode" : "Dark Mode"}</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <Link prefetch={false} href="#profile">
-                <User />
-                <span>Admin Profile</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
+
       <SidebarRail />
     </Sidebar>
   );

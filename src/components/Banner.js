@@ -53,7 +53,7 @@ const Banner = () => {
             </Button>
           </Link>
           <Link
-            href="/deals"
+            href="/products"
             className="hidden relative gap-2 md:inline-flex items-center justify-center overflow-hidden rounded-md px-8 py-2.5 tracking-tighter "
           >
             <span className="relative text-base font-semibold">

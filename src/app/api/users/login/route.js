@@ -7,13 +7,14 @@ export async function POST(request, { params }) {
   const body = await request.json();
   //   send all user data(username password email in the request)
   const user = await UserModel.findOne({ email: body.email });
-  console.log(user.email);
-  try {
-    const match = await bcrypt.compare(body.password, user.password);
 
+  try {
+
+    const match = await bcrypt.compare(body.password, user.password);
     const accessToken = jwt.sign(JSON.stringify(user), process.env.SECRET_KEY, {
       expiresIn: "3600s",
     });
+    
     console.log(accessToken);
     if (match) {
       console.log("this is token", accessToken);

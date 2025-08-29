@@ -9,11 +9,15 @@ export async function GET() {
   return Response.json(allProducts, { status: 200 });
 }
 
-export async function POST(request, { params }) {
+// the added products should be added to the products model as a whole so that we can access them all in the store
+// we should have a seller id for each of them so that we can access a specific group of products in the route /api/seller/products/sellerId
+export async function POST(request) {
   await connectDb();
+
   try {
     const body = await request.json();
     const {
+      sellerId,
       name,
       category,
       price,
@@ -25,15 +29,11 @@ export async function POST(request, { params }) {
       inStock,
     } = body;
 
-    // check if email exists
-    const isExist = await ProductModel.findOne({ name });
-    if (isExist) {
-      return Response.json({
-        error: "A product already exists with this name",
-      });
+    const seller = await UserModel.findById(sellerId);
+    if (!seller) {
+      return new Response(JSON.stringify("seller not found"), { status: 404 });
     }
 
-    // create new user
     const newProduct = await ProductModel.create({
       name,
       category,
@@ -48,6 +48,6 @@ export async function POST(request, { params }) {
 
     return Response.json(newProduct, { status: 201 });
   } catch (error) {
-    return Response.json(error, { status: 500 });
+    return new Response(JSON.stringify({ error }));
   }
 }

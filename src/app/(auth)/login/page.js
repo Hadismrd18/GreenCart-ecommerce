@@ -8,6 +8,9 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { assets } from "@/assets/assets";
 
+// add 2 checkboxes determining the user is logging in as a customer or a seller/change the backend login and signup
+// routes for that
+
 export default function page() {
   return (
     <div className="pt-10 bg-[#4fbf8b23] rose-gradient relative min-h-screen overflow-hidden">
@@ -30,14 +33,6 @@ export default function page() {
                 className="mx-auto h-auto w-full md:w-90"
               />
             </motion.div>
-            {/* <motion.h1
-              className="text-2xl md:text-4xl font-bold leading-tight tracking-tight"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-            >
-              The make money app
-            </motion.h1> */}
           </div>
         </motion.div>
 
@@ -123,7 +118,9 @@ export default function page() {
 
                 <div className="flex items-center justify-center gap-1">
                   <span>Dont have an Account?</span>
-                  <Link href="/signup" className="underline">Sign Up</Link>
+                  <Link href="/signup" className="underline">
+                    Sign Up
+                  </Link>
                 </div>
 
                 {/* Terms */}

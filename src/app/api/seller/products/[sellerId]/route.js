@@ -5,10 +5,11 @@ import ProductModel from "@/db/models/Product.model";
 
 export async function GET(request, { params }) {
   await connectDb();
+
   try {
     const parameters = await params;
     const sellerId = parameters.sellerId;
-    const sellerProducts = await ProductModel.find({ _id: sellerId });
+    const sellerProducts = await ProductModel.find({ sellerId });
 
     return new Response(sellerProducts, { status: 200 });
   } catch (error) {

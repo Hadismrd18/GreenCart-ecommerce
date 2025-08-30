@@ -19,7 +19,7 @@ export async function POST(request, { params }) {
       updatedAt,
     } = body;
 
-    const newOrder = OrderModel.create({
+    const newOrder = await OrderModel.create({
       sellerId,
       items,
       amount,

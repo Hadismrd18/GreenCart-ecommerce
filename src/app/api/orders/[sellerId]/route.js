@@ -10,13 +10,13 @@ export async function GET(req, { params }) {
     const parameters = await params;
     const sellerId = parameters.sellerId;
     // check if that id is for a seller
-    const seller = UserModel.find({ _id: sellerId, isSeller: true });
+    const seller = await UserModel.find({ _id: sellerId, isSeller: true });
     if (!seller) {
       return new Response(JSON.stringify("seller not found"));
     }
-    const sellerOrders = await OrderModel.find({ _id: sellerId });
+    const sellerOrders = await OrderModel.find({ sellerId });
     return new Response(JSON.stringify(sellerOrders), { status: 200 });
   } catch (error) {
-    return new Response(JSON.stringify({ error }));
+    return new Response(JSON.stringify({ error: error?.message }));
   }
 }

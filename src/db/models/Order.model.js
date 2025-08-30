@@ -9,18 +9,14 @@ const OrderSchema = new mongoose.Schema({
   items: [
     {
       product: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
-        required: true,
+        type: Object,
       },
       quantity: { type: Number, required: true },
     },
   ],
   amount: { type: Number, required: true },
   address: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Address",
-    required: true,
+    type: String,
   },
   status: { type: String, required: true },
   paymentType: { type: String, required: true },

@@ -30,11 +30,13 @@ export async function POST(request) {
     } = body;
 
     const seller = await UserModel.findById(sellerId);
+    console.log(seller);
     if (!seller) {
       return new Response(JSON.stringify("seller not found"), { status: 404 });
     }
 
     const newProduct = await ProductModel.create({
+      sellerId,
       name,
       category,
       price,
@@ -46,7 +48,7 @@ export async function POST(request) {
       inStock,
     });
 
-    return Response.json(newProduct, { status: 201 });
+    return new Response(newProduct, { status: 201 });
   } catch (error) {
     return new Response(JSON.stringify({ error }));
   }

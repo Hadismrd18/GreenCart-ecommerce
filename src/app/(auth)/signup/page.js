@@ -7,8 +7,45 @@ import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { assets } from "@/assets/assets";
-
+import { useForm } from "react-hook-form";
 export default function page() {
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      isSeller: false,
+      isCustomer: false,
+    },
+  });
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    try {
+      const newData = {
+        ...data,
+        isCustomer: data.isCustomer && true,
+        isSeller: data.isSeller && true,
+      };
+      const res = await fetch("/api/users", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+      const data_res = await res.json();
+      console.log(data_res);
+    } catch (error) {
+      console.log(error);
+    }
+
+    reset();
+    // submit the form using the specified api
+  };
+
   return (
     <div className="pt-10 bg-[#4fbf8b23] rose-gradient relative min-h-screen overflow-hidden">
       <div className="relative z-10 grid min-h-screen grid-cols-1 md:grid-cols-2">
@@ -72,43 +109,116 @@ export default function page() {
                     ways to make money.
                   </p>
                 </motion.div>
-
-                {/* Email Input */}
-                <motion.div
-                  className="space-y-2"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.5, ease: "easeOut" }}
+                <form
+                  className="flex flex-col gap-3"
+                  onSubmit={handleSubmit(onSubmit)}
                 >
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" />
-                </motion.div>
-
-                <motion.div
-                  className="space-y-2"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
-                >
-                  <Label htmlFor="password">Password</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    className="border-border border"
-                  />
-                </motion.div>
-
-                {/* Continue Button */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.7, ease: "easeOut" }}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Button className="w-full">Continue</Button>
-                </motion.div>
-
+                  {/* Name Input */}
+                  <motion.div
+                    className="space-y-2"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.5, ease: "easeOut" }}
+                  >
+                    <Label htmlFor="name">Name</Label>
+                    <Input
+                      {...register("name", {
+                        required: "Name is required",
+                      })}
+                      id="name"
+                      type="text"
+                    />
+                    {errors.name && (
+                      <p style={{ color: "red" }}>{errors.name.message}</p>
+                    )}
+                  </motion.div>
+                  {/* Email Input */}
+                  <motion.div
+                    className="space-y-2"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.5, ease: "easeOut" }}
+                  >
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      {...register("email", {
+                        required: "Email is required",
+                      })}
+                      id="email"
+                      type="email"
+                    />
+                    {errors.name && (
+                      <p style={{ color: "red" }}>{errors.name.message}</p>
+                    )}
+                  </motion.div>
+                  {/* Password Input */}
+                  <motion.div
+                    className="space-y-2"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
+                  >
+                    <Label htmlFor="password">Password</Label>
+                    <Input
+                      id="password"
+                      type="password"
+                      className="border-border border"
+                      {...register("password", {
+                        required: "Password is required",
+                      })}
+                    />
+                  </motion.div>
+                  <div className="flex items-center justify-between">
+                    <motion.div
+                      className="space-y-2 flex gap-2 items-center justify-center"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{
+                        duration: 0.5,
+                        delay: 0.6,
+                        ease: "easeOut",
+                      }}
+                    >
+                      <Label htmlFor="isSeller">Sign up as a seller</Label>
+                      <Input
+                        id="isSeller"
+                        type="radio"
+                        className="size-3 border-border border"
+                        {...register("isSeller")}
+                      />
+                    </motion.div>
+                    <motion.div
+                      className="space-y-2 flex gap-2 items-center justify-center"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{
+                        duration: 0.5,
+                        delay: 0.6,
+                        ease: "easeOut",
+                      }}
+                    >
+                      <Label htmlFor="isCustomer">Sign up as a customer</Label>
+                      <Input
+                        id="isCustomer"
+                        type="radio"
+                        className="size-3 border-border border"
+                        {...register("isCustomer")}
+                      />
+                    </motion.div>
+                  </div>
+                  {/* Continue Button */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.7, ease: "easeOut" }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Button type="submit" className="w-full">
+                      Continue
+                    </Button>
+                  </motion.div>
+                </form>
                 {/* Divider */}
                 <motion.div
                   className="relative"
@@ -123,7 +233,9 @@ export default function page() {
 
                 <div className="flex items-center justify-center gap-1">
                   <span>Already have an Account?</span>
-                  <Link href="/login" className="underline">Login</Link>
+                  <Link href="/login" className="underline">
+                    Login
+                  </Link>
                 </div>
 
                 {/* Terms */}

@@ -67,7 +67,7 @@ export default function Header2() {
   };
 
   const path = usePathname().split("/");
-  console.log(path);
+
   return (
     <>
       {path[1] !== "seller" ? (
@@ -252,7 +252,7 @@ export default function Header2() {
                       </Link>
                       <Link
                         prefetch={false}
-                        href="/signup"
+                        href="/login"
                         className="bg-[#4fbf8b] text-background hover:bg-[#44ae7c] block w-full rounded-full py-3 text-center font-medium transition-all duration-200"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >

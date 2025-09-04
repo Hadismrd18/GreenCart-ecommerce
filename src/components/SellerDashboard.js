@@ -11,7 +11,8 @@ import { SystemStatus } from "./seller/SystemStatus";
 import { RecentActivity } from "./seller/RecentActivity";
 import { DashboardHeader } from "./seller/DashboardHeader";
 import { SellerSidebar } from "./seller/SellerSidebar";
-
+import { jwtDecode } from "jwt-decode";
+import { useRouter } from "next/navigation";
 // Dashboard stats data
 const stats = [
   {
@@ -52,7 +53,7 @@ const stats = [
   },
 ];
 
-export default function SellerDashboard({children}) {
+export default function SellerDashboard({ children }) {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -69,6 +70,11 @@ export default function SellerDashboard({children}) {
   const handleAddUser = () => {
     console.log("Adding new user...");
   };
+  // get seller data
+  const sellerToken = sessionStorage.getItem("accessToken");
+  const seller = jwtDecode(sellerToken);
+  console.log(seller);
+
 
   return (
     <SidebarProvider>
@@ -87,7 +93,7 @@ export default function SellerDashboard({children}) {
             <div className="mx-auto max-w-6xl space-y-4 sm:space-y-6">
               <div className="px-2 sm:px-0">
                 <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-                  Welcome Admin
+                  Welcome {seller.name}
                 </h1>
                 <p className="text-muted-foreground text-sm sm:text-base">
                   Here&apos;s what&apos;s happening with your platform today.
@@ -95,9 +101,7 @@ export default function SellerDashboard({children}) {
               </div>
 
               {/* Main Content Grid */}
-              <div className="w-full flex justify-start">
-                {children}
-              </div>
+              <div className="w-full flex justify-start">{children}</div>
             </div>
           </div>
         </div>

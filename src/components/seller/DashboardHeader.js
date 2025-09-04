@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
+import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -37,6 +38,12 @@ export const DashboardHeader = memo(function DashboardHeader({
   onExport,
   isRefreshing,
 }) {
+  // seller logout
+  const router = useRouter();
+  const logOutFunction = () => {
+    sessionStorage.removeItem("accessToken");
+    router.push("/");
+  };
   return (
     <header className="bg-background/95 sticky top-0 z-50 flex h-16 w-full shrink-0 items-center gap-2 border-b backdrop-blur transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
       <div className="flex items-center gap-2 px-4">
@@ -59,7 +66,7 @@ export const DashboardHeader = memo(function DashboardHeader({
         >
           {/* Desktop Actions */}
 
-          <Button variant="outline" size="sm">
+          <Button onClick={logOutFunction} variant="outline" size="sm">
             Logout
           </Button>
         </motion.div>

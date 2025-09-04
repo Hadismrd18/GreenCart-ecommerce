@@ -9,12 +9,12 @@ import { motion } from "framer-motion";
 import { assets } from "@/assets/assets";
 import { useForm } from "react-hook-form";
 import { jwtDecode } from "jwt-decode";
-
+import { useRouter } from "next/navigation";
 // add 2 checkboxes determining the user is logging in as a customer or a seller/change the backend login and signup
 // routes for that
 
 export default function page() {
-
+  const router = useRouter();
   const {
     register,
     reset,
@@ -29,19 +29,22 @@ export default function page() {
   });
 
   const onSubmit = async (data) => {
-    const res = await fetch("/api/users/login", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-    const res_data = await res.json();
+    try {
+      const res = await fetch("/api/users/login", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+      const res_data = await res.json();
 
-    const token = res_data.accessToken;
-    const decoded_data = jwtDecode(token);
-    sessionStorage.setItem("accessToken", token);
-    
+      const token = res_data.accessToken;
+      const decoded_data = jwtDecode(token);
+      sessionStorage.setItem("accessToken", token);
+      reset();
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
-
-  
 
   return (
     <div className="pt-10 bg-[#4fbf8b23] rose-gradient relative min-h-screen overflow-hidden">

@@ -26,7 +26,6 @@ export async function POST(request, { params }) {
 
     // Minimal token payload
     const payload = {
-      id: user._id.toString(),
       email: user.email,
       name: user.name,
       isSeller: user.isSeller,

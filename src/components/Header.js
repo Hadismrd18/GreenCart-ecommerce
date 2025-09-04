@@ -277,6 +277,34 @@ export default function Header2() {
                           </Link>
                         </motion.div>
                       ))}
+                      {isSeller ? (
+                        <motion.div className="relative ">
+                          <Link
+                            prefetch={false}
+                            href="/seller"
+                            className=" text-foreground/80 hover:text-foreground relative rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200"
+                          >
+                            <motion.div
+                              className="bg-white border-2 border-gray-100 absolute inset-0 rounded-full"
+                              layoutId="navbar-hover"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              transition={{
+                                type: "spring",
+                                stiffness: 400,
+                                damping: 30,
+                              }}
+                            />
+
+                            <span className="relative z-10">
+                              Seller dashboard
+                            </span>
+                          </Link>
+                        </motion.div>
+                      ) : (
+                        ""
+                      )}
                     </div>
 
                     <motion.div

@@ -6,12 +6,15 @@ import { Menu, X, ArrowRight, Zap, Search } from "lucide-react";
 import Link from "next/link";
 import { assets } from "../assets/assets";
 import { usePathname } from "next/navigation";
+import { jwtDecode } from "jwt-decode";
+import { useRouter } from "next/navigation";
 const navItems = [
   { name: "Home", href: "/" },
   { name: "All Products", href: "/products" },
 ];
 
 export default function Header2() {
+  const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState(null);
@@ -68,6 +71,27 @@ export default function Header2() {
 
   const path = usePathname().split("/");
 
+  // show seller dashboard button if the user is logged in and IS A SELLER
+  const userToken = sessionStorage.getItem("accessToken");
+  let isSeller = false;
+  let showLogOutButton = false;
+  if (userToken) {
+    const user = jwtDecode(userToken);
+    console.log(user);
+    console.log(user.isSeller);
+    if (user.isSeller) {
+      isSeller = true;
+    }
+    showLogOutButton = true;
+    console.log(showLogOutButton);
+  }
+
+  // logout of account
+  const logOutFunction = () => {
+    setIsMobileMenuOpen(false);
+    sessionStorage.removeItem("accessToken");
+    router.refresh();
+  };
   return (
     <>
       {path[1] !== "seller" ? (
@@ -102,28 +126,32 @@ export default function Header2() {
                 </motion.div>
 
                 <nav className="hidden items-center space-x-1 lg:flex">
-                  <motion.div className="relative ">
-                    <Link
-                      prefetch={false}
-                      href="/seller"
-                      className=" text-foreground/80 hover:text-foreground relative rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200"
-                    >
-                      <motion.div
-                        className="bg-white border-2 border-gray-100 absolute inset-0 rounded-full"
-                        layoutId="navbar-hover"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{
-                          type: "spring",
-                          stiffness: 400,
-                          damping: 30,
-                        }}
-                      />
+                  {isSeller ? (
+                    <motion.div className="relative ">
+                      <Link
+                        prefetch={false}
+                        href="/seller"
+                        className=" text-foreground/80 hover:text-foreground relative rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200"
+                      >
+                        <motion.div
+                          className="bg-white border-2 border-gray-100 absolute inset-0 rounded-full"
+                          layoutId="navbar-hover"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 400,
+                            damping: 30,
+                          }}
+                        />
 
-                      <span className="relative z-10">Seller dashboard</span>
-                    </Link>
-                  </motion.div>
+                        <span className="relative z-10">Seller dashboard</span>
+                      </Link>
+                    </motion.div>
+                  ) : (
+                    ""
+                  )}
                   {navItems.map((item) => (
                     <motion.div
                       key={item.name}
@@ -177,14 +205,25 @@ export default function Header2() {
                     <Link href="/cart">
                       <img src={assets.nav_cart_icon.src} className="w-5 h-5" />
                     </Link>
-                    <Link
-                      prefetch={false}
-                      href="/login"
-                      className="bg-[#4fbf8b] text-background hover:bg-[#44ae7c] inline-flex items-center space-x-2 rounded-full px-5 py-2.5 text-sm font-medium shadow-sm transition-all duration-200"
-                    >
-                      <span>Login</span>
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
+                    {showLogOutButton ? (
+                      <button
+                        prefetch={false}
+                        onClick={logOutFunction}
+                        className="bg-[#4fbf8b] text-background hover:bg-[#44ae7c] inline-flex items-center space-x-2 rounded-full px-5 py-2.5 text-sm font-medium shadow-sm transition-all duration-200"
+                      >
+                        <span>Logout</span>
+                        <ArrowRight className="h-4 w-4" />
+                      </button>
+                    ) : (
+                      <Link
+                        prefetch={false}
+                        href="/login"
+                        className="bg-[#4fbf8b] text-background hover:bg-[#44ae7c] inline-flex items-center space-x-2 rounded-full px-5 py-2.5 text-sm font-medium shadow-sm transition-all duration-200"
+                      >
+                        <span>Login</span>
+                        <ArrowRight className="h-4 w-4" />
+                      </Link>
+                    )}
                   </motion.div>
                 </motion.div>
 
@@ -250,14 +289,24 @@ export default function Header2() {
                           className="w-5 h-5"
                         />
                       </Link>
-                      <Link
-                        prefetch={false}
-                        href="/login"
-                        className="bg-[#4fbf8b] text-background hover:bg-[#44ae7c] block w-full rounded-full py-3 text-center font-medium transition-all duration-200"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        Login
-                      </Link>
+                      {showLogOutButton ? (
+                        <button
+                          prefetch={false}
+                          className="bg-[#4fbf8b] text-background hover:bg-[#44ae7c] block w-full rounded-full py-3 text-center font-medium transition-all duration-200"
+                          onClick={logOutFunction}
+                        >
+                          Logout
+                        </button>
+                      ) : (
+                        <Link
+                          prefetch={false}
+                          href="/login"
+                          className="bg-[#4fbf8b] text-background hover:bg-[#44ae7c] block w-full rounded-full py-3 text-center font-medium transition-all duration-200"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          Login
+                        </Link>
+                      )}
                     </motion.div>
                   </div>
                 </motion.div>

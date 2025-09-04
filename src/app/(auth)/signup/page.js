@@ -8,7 +8,9 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { assets } from "@/assets/assets";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 export default function page() {
+  const router = useRouter()
   const {
     register,
     reset,
@@ -34,10 +36,11 @@ export default function page() {
       };
       const res = await fetch("/api/users", {
         method: "POST",
-        body: JSON.stringify(data),
+        body: JSON.stringify(newData),
       });
       const data_res = await res.json();
-      console.log(data_res);
+      console.log(data_res)
+      router.push("/login")
     } catch (error) {
       console.log(error);
     }

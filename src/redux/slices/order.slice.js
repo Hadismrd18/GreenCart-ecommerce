@@ -12,14 +12,13 @@ export const FetchOrders = createAsyncThunk("orders/get", async (id) => {
 
 const orderSlice = createSlice({
   name: "order",
-  initialState: {},
+  initialState: [],
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(FetchOrders.fulfilled, (state, action) => {
-      console.log(action.payload);
+      return action.payload;
     });
   },
 });
 
-
-export default orderSlice.reducer
+export default orderSlice.reducer;

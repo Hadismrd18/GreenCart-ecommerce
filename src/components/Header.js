@@ -72,18 +72,17 @@ export default function Header2() {
   const path = usePathname().split("/");
 
   // show seller dashboard button if the user is logged in and IS A SELLER
-  useEffect(() => {
-    const userToken = sessionStorage.getItem("accessToken");
-    let isSeller = false;
-    let showLogOutButton = false;
-    if (userToken) {
-      const user = jwtDecode(userToken);
-      if (user.isSeller) {
-        isSeller = true;
-      }
-      showLogOutButton = true;
+
+  const userToken = sessionStorage.getItem("accessToken");
+  let isSeller = false;
+  let showLogOutButton = false;
+  if (userToken) {
+    const user = jwtDecode(userToken);
+    if (user.isSeller) {
+      isSeller = true;
     }
-  }, []);
+    showLogOutButton = true;
+  }
 
   // logout of account
   const logOutFunction = () => {

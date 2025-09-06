@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import styles from "./page.module.css";
 import Header2 from "@/components/Header";
@@ -10,9 +11,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Footer4Col from "@/components/Footer";
 import { dummyProducts } from "../assets/assets";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { FetchAllProducts } from "@/redux/slices/product.slice";
 export default function Home() {
-  const bestSellers = dummyProducts.splice(0, 5);
-  console.log(bestSellers);
+
   return (
     <div className="flex flex-col items-center gap-16">
       <Banner />
@@ -32,7 +35,7 @@ export default function Home() {
         </div>
       </div>
       {/* best sellers */}
-      <div className="w-[80%]">
+      {/* <div className="w-[80%]">
         <h1 className="text-start font-semibold mb-4 text-2xl">Best sellers</h1>
         <div className="w-full gap-5 grid grid-cols-1 sm:grid-cols-2 grid-rows-3 md:grid-cols-4 md:grid-rows-2 lg:grid-cols-5 lg:grid-rows-1">
           {bestSellers.map((item, index) => (
@@ -47,7 +50,7 @@ export default function Home() {
             />
           ))}
         </div>
-      </div>
+      </div> */}
       {/* bottom banner */}
       <Banner2 />
       {/* never miss a deal */}

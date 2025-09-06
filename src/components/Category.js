@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 
 function Category({ text, path, bgColor, image }) {
-  console.log(bgColor);
+
   return (
     <Link href={`/products/${path}`}>
       <div

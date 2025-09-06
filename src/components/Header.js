@@ -73,7 +73,7 @@ export default function Header2() {
 
   // show seller dashboard button if the user is logged in and IS A SELLER
 
-  const userToken = sessionStorage.getItem("accessToken");
+  const userToken = sessionStorage.getItem("accessToken") || "";
   let isSeller = false;
   let showLogOutButton = false;
   if (userToken) {

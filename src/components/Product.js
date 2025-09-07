@@ -17,24 +17,18 @@ function Product({
   productId,
   sellerId,
 }) {
-  console.log(productId, sellerId);
   const [count, setCount] = useState(0);
 
   const allProducts = useSelector((state) => state.product.data);
   const dispatch = useDispatch();
   const changeOrderCount = async (e, productId, sellerId) => {
-    console.log(e);
-    console.log(e.target.innerText, productId, sellerId);
     if (e.target.innerText === "-") {
       setCount(count - 1);
     } else {
       setCount(count + 1);
     }
     dispatch(FetchAllProducts());
-    console.log(productId);
-    console.log(allProducts);
     const currentItem = allProducts?.find((item) => item._id === productId);
-    console.log(currentItem);
     dispatch(
       addItemToCart({
         sellerId,

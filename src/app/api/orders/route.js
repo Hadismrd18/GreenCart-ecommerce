@@ -7,17 +7,8 @@ export async function POST(request, { params }) {
   await connectDb();
   try {
     const body = await request.json();
-    const {
-      sellerId,
-      items,
-      amount,
-      address,
-      status,
-      paymentType,
-      isPaid,
-      createdAt,
-      updatedAt,
-    } = body;
+    const { sellerId, items, amount, address, status, paymentType, isPaid } =
+      body;
 
     const newOrder = await OrderModel.create({
       sellerId,
@@ -27,8 +18,6 @@ export async function POST(request, { params }) {
       status,
       paymentType,
       isPaid,
-      createdAt,
-      updatedAt,
     });
     return new Response(JSON.stringify(newOrder), { status: 201 });
   } catch (error) {

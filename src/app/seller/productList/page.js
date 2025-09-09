@@ -1,5 +1,9 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import { dummyProducts } from "@/assets/assets";
+import { jwtDecode } from "jwt-decode";
+import { useDispatch, useSelector } from "react-redux";
+import { FetchAllSellerProducts } from "@/redux/slices/sellerProducts.slice";
 export default function page() {
   const products = [
     { name: "Potato 500g", category: "Vegetables", price: 35, inStock: true },
@@ -10,6 +14,25 @@ export default function page() {
     { name: "Apple 1 kg", category: "Fruits", price: 90, inStock: true },
   ];
 
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.sellerProducts.data);
+  useEffect(() => {
+    const sellerToken = sessionStorage.getItem("accessToken");
+    if (sellerToken) {
+      const sellerData = jwtDecode(sellerToken);
+      console.log(sellerData)
+      if (sellerData?.email) {
+        dispatch(FetchAllSellerProducts(sellerData.email));
+      }
+    }
+  }, [dispatch]);
+
+  if (data !== null) {
+    console.log("items data loaded:", data);
+  }
+if(!data){
+  return <div>Loading...</div>
+}
   return (
     <div className="flex flex-col items-start w-full">
       <h2 className="text-xl font-semibold mb-4 p-6">All Product</h2>
@@ -25,11 +48,11 @@ export default function page() {
               </tr>
             </thead>
             <tbody>
-              {dummyProducts.map((product, idx) => (
+              {data?.map((product, idx) => (
                 <tr key={idx} className="border-b hover:bg-gray-50 transition">
                   <td className="p-4 flex items-center gap-3">
                     {/* Gray placeholder instead of image */}
-                    <img src={product.image[0].src} className="size-12"/>
+                    <img src={product.image[0].src} className="size-12" />
                     <span className="text-gray-700">{product.name}</span>
                   </td>
                   <td className="p-4 text-gray-600">{product.category}</td>

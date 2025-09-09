@@ -10,8 +10,8 @@ export async function GET(request, { params }) {
     const parameters = await params;
     const sellerId = parameters.sellerId;
     const sellerProducts = await ProductModel.find({ sellerId });
-
-    return new Response(sellerProducts, { status: 200 });
+    // console.log(sellerProducts);
+    return new Response(JSON.stringify(sellerProducts), { status: 200 });
   } catch (error) {
     return new Response(JSON.stringify({ error }));
   }

@@ -22,7 +22,8 @@ export async function POST(request) {
       category,
       price,
       offerPrice,
-      image,
+      image, 
+      // img : [img1,img2,img3,img4]
       description,
       createdAt,
       updatedAt,

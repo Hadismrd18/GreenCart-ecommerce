@@ -20,8 +20,8 @@ function Product({
   const [count, setCount] = useState(0);
 
   const allProducts = useSelector((state) => state.product.data);
-  console.log(allProducts)
   const dispatch = useDispatch();
+  
   const changeOrderCount = async (e, productId, sellerId) => {
     if (e.target.innerText === "-") {
       setCount(count - 1);

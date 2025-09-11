@@ -20,6 +20,7 @@ function Product({
   const [count, setCount] = useState(0);
 
   const allProducts = useSelector((state) => state.product.data);
+  console.log(allProducts)
   const dispatch = useDispatch();
   const changeOrderCount = async (e, productId, sellerId) => {
     if (e.target.innerText === "-") {
@@ -29,6 +30,7 @@ function Product({
     }
     dispatch(FetchAllProducts());
     const currentItem = allProducts?.find((item) => item._id === productId);
+    console.log(currentItem)
     dispatch(
       addItemToCart({
         sellerId,
@@ -37,6 +39,8 @@ function Product({
     );
   };
   const cartItems = useSelector((state) => state.cart);
+
+  console.log("this is img src",src)
   return (
     <div>
       <div className="py-3 flex flex-col items-center justify-center gap-3 rounded border-2 p-2 border-gray-100">

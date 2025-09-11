@@ -11,7 +11,8 @@ function page() {
   useEffect(() => {
     dispatch(FetchAllProducts());
   }, [dispatch]);
-
+  console.log(allProducts);
+  allProducts.map((item) => console.log(item.image[0]));
   return (
     <div className="mt-24 px-14">
       <h1 className="font-semibold text-2xl md:text-4xl text-gray-600">
@@ -24,7 +25,7 @@ function page() {
             productId={item._id}
             sellerId={item.sellerId}
             offerPrice={item.offerPrice}
-            src={item.image[0].src}
+            src={item.image[0]}
             text={item.name}
             category={item.category}
             price={item.price}

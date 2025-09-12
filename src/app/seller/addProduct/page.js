@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { assets } from "@/assets/assets";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const categories = [
   "vegetables",
@@ -62,14 +62,7 @@ export default function Page() {
   };
 
   const onSubmit = async (data) => {
-    const {
-      category,
-      description,
-      inStock,
-      name,
-      offerPrice,
-      price,
-    } = data;
+    const { category, description, inStock, name, offerPrice, price } = data;
 
     // sellerId declared outside the guard so it doesn't create a render-time reference error
     let sellerId = null;
@@ -82,7 +75,9 @@ export default function Page() {
           const seller = jwtDecode(sellerToken);
           if (seller?.email) {
             // encode the email for safety
-            const res1 = await fetch(`/api/users/${encodeURIComponent(seller.email)}`);
+            const res1 = await fetch(
+              `/api/users/${encodeURIComponent(seller.email)}`
+            );
             if (res1.ok) {
               const data1 = await res1.json();
               sellerId = data1?.[0]?._id ?? null;
@@ -139,7 +134,10 @@ export default function Page() {
 
   return (
     <main className="md:w-1/2 w-full min-h-screen bg-white flex items-center justify-center p-2">
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-2xl bg-white rounded-l">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full max-w-2xl bg-white rounded-l"
+      >
         {/* Product Images */}
         <div className="mb-6">
           <label className="block font-semibold mb-2">Product Image</label>
@@ -176,9 +174,13 @@ export default function Page() {
 
         {/* Product Description */}
         <div className="mb-6">
-          <label className="block font-semibold mb-2">Product Description</label>
+          <label className="block font-semibold mb-2">
+            Product Description
+          </label>
           <textarea
-            {...register("description", { required: "description is required" })}
+            {...register("description", {
+              required: "description is required",
+            })}
             placeholder="Type here"
             className="w-full border border-gray-300 rounded-md p-3 h-28 resize-none focus:outline-none"
           />
@@ -187,7 +189,10 @@ export default function Page() {
         {/* Category */}
         <div className="mb-6">
           <label className="block font-semibold mb-2">Category</label>
-          <select {...register("category", { required: "category is required" })} className="w-full border border-gray-300 rounded-md p-3 focus:outline-none">
+          <select
+            {...register("category", { required: "category is required" })}
+            className="w-full border border-gray-300 rounded-md p-3 focus:outline-none"
+          >
             <option value="">Select Category</option>
             {categories.map((item, index) => (
               <option key={index} value={item}>
@@ -201,16 +206,31 @@ export default function Page() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
           <div>
             <label className="block font-semibold mb-2">Product Price</label>
-            <input {...register("price", { required: "Product Price is required" })} type="number" placeholder="0" className="w-full border border-gray-300 rounded-md p-3 focus:outline-none" />
+            <input
+              {...register("price", { required: "Product Price is required" })}
+              type="number"
+              placeholder="0"
+              className="w-full border border-gray-300 rounded-md p-3 focus:outline-none"
+            />
           </div>
           <div>
             <label className="block font-semibold mb-2">Offer Price</label>
-            <input {...register("offerPrice", { required: "Offer Price is required" })} type="number" placeholder="0" className="w-full border border-gray-300 rounded-md p-3 focus:outline-none" />
+            <input
+              {...register("offerPrice", {
+                required: "Offer Price is required",
+              })}
+              type="number"
+              placeholder="0"
+              className="w-full border border-gray-300 rounded-md p-3 focus:outline-none"
+            />
           </div>
         </div>
 
         {/* Submit Button */}
-        <button type="submit" className="bg-[#4fbf8b] text-white px-8 py-3 rounded-md font-semibold">
+        <button
+          type="submit"
+          className="bg-[#4fbf8b] text-white px-8 py-3 rounded-md font-semibold"
+        >
           ADD
         </button>
       </form>

@@ -41,8 +41,10 @@ export const DashboardHeader = memo(function DashboardHeader({
   // seller logout
   const router = useRouter();
   const logOutFunction = () => {
-    sessionStorage.removeItem("accessToken");
-    router.push("/");
+    if (typeof window !== "undefined") {
+      sessionStorage.removeItem("accessToken");
+      router.push("/");
+    }
   };
   return (
     <header className="bg-background/95 sticky top-0 z-50 flex h-16 w-full shrink-0 items-center gap-2 border-b backdrop-blur transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">

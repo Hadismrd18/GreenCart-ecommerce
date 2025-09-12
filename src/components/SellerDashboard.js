@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Users, Activity, DollarSign, Eye } from "lucide-react";
 import { DashboardCard } from "./seller/DashboardCard";
@@ -56,7 +56,7 @@ const stats = [
 export default function SellerDashboard({ children }) {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [sellerName, setSellerName] = useState(null);
   const handleRefresh = async () => {
     setIsRefreshing(true);
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -71,11 +71,22 @@ export default function SellerDashboard({ children }) {
     console.log("Adding new user...");
   };
   // get seller data
-  const sellerToken = sessionStorage.getItem("accessToken");
-  const seller = jwtDecode(sellerToken);
-  console.log(seller);
+  const [isMounted, setIsMounted] = useState(false);
 
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
+  useEffect(() => {
+    if (isMounted) {
+      const sellerToken = sessionStorage.getItem("accessToken");
+      setSellerName(jwtDecode(sellerToken).name);
+    }
+  }, [isMounted]);
+
+  if (!isMounted) {
+    return <div>Loading...</div>; // or a loader / placeholder
+  }
   return (
     <SidebarProvider>
       <SellerSidebar />

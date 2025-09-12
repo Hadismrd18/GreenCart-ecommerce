@@ -76,7 +76,7 @@ export default function Page() {
           if (seller?.email) {
             // encode the email for safety
             const res1 = await fetch(
-              `/api/users/${encodeURIComponent(seller.email)}`
+              `/api/users/${seller.email}`
             );
             if (res1.ok) {
               const data1 = await res1.json();

@@ -14,25 +14,36 @@ export default function page() {
     { name: "Apple 1 kg", category: "Fruits", price: 90, inStock: true },
   ];
 
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const dispatch = useDispatch();
   const data = useSelector((state) => state.sellerProducts.data);
   useEffect(() => {
-    const sellerToken = sessionStorage.getItem("accessToken");
-    if (sellerToken) {
-      const sellerData = jwtDecode(sellerToken);
-      console.log(sellerData)
-      if (sellerData?.email) {
-        dispatch(FetchAllSellerProducts(sellerData.email));
+    if (isMounted) {
+      const sellerToken = sessionStorage.getItem("accessToken");
+      if (sellerToken) {
+        const sellerData = jwtDecode(sellerToken);
+        console.log(sellerData);
+        if (sellerData?.email) {
+          dispatch(FetchAllSellerProducts(sellerData.email));
+        }
       }
     }
-  }, [dispatch]);
+  }, [dispatch, isMounted]);
 
   if (data !== null) {
     console.log("items data loaded:", data);
   }
-if(!data){
-  return <div>Loading...</div>
-}
+  if(!isMounted){
+     return <div>Loading...</div>;
+  }
+  if (!data) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="flex flex-col items-start w-full">
       <h2 className="text-xl font-semibold mb-4 p-6">All Product</h2>

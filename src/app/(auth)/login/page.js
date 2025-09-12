@@ -38,7 +38,10 @@ export default function page() {
 
       const token = res_data.accessToken;
       const decoded_data = jwtDecode(token);
-      sessionStorage.setItem("accessToken", token);
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("accessToken", token);
+      }
+
       reset();
       router.push("/");
     } catch (error) {

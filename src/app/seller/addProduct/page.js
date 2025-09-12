@@ -78,6 +78,8 @@ function page() {
       price,
     } = data;
 
+    let sellerId; // declare outside
+
     if (typeof window !== "undefined") {
       const sellerToken = sessionStorage.getItem("accessToken");
       const seller = jwtDecode(sellerToken);
@@ -85,7 +87,7 @@ function page() {
       const res1 = await fetch(`/api/users/${seller.email}`);
       const data1 = await res1.json();
       console.log(data1);
-      const sellerId = data1[0]._id;
+      sellerId = data1[0]._id;
       console.log(sellerId);
     }
 

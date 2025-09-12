@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 import { assets } from "@/assets/assets";
 import { findCurrentUser } from "@/redux/slices/user.slice";
 import React, { useState, useEffect } from "react";

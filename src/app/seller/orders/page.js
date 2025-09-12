@@ -17,13 +17,22 @@ function page() {
   }, []); // runs once after mount
 
   // get the token and find the seller
-  useEffect(() => {
+useEffect(() => {
+  if (!mounted) return;
+
+  if (typeof window !== "undefined") {
     const sellerToken = sessionStorage.getItem("accessToken");
-    const seller = jwtDecode(sellerToken);
-    console.log(seller);
-    // dispatch once on mount
-    dispatch(findCurrentUser(seller.email));
-  }, [dispatch]);
+    if (sellerToken) {
+      try {
+        const seller = jwtDecode(sellerToken);
+        console.log(seller);
+        dispatch(findCurrentUser(seller.email));
+      } catch (err) {
+        console.error("Invalid token", err);
+      }
+    }
+  }
+}, [dispatch, mounted]);
 
   // get sellerdata fron redux and get the complete seller data from back and store the id in sellerId
   const sellerData = useSelector((state) => state.user.userData);

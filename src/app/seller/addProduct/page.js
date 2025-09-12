@@ -76,24 +76,33 @@ function page() {
       offerPrice,
       price,
     } = data;
-    const sellerToken = sessionStorage.getItem("accessToken");
-    const seller = jwtDecode(sellerToken);
-    console.log(seller);
-    const res1 = await fetch(`/api/users/${seller.email}`);
-    const data1 = await res1.json();
-    console.log(data1);
-    const sellerId = data1[0]._id;
-    console.log(sellerId);
+
+    if (typeof window !== "undefined") {
+      const sellerToken = sessionStorage.getItem("accessToken");
+      const seller = jwtDecode(sellerToken);
+      console.log(seller);
+      const res1 = await fetch(`/api/users/${seller.email}`);
+      const data1 = await res1.json();
+      console.log(data1);
+      const sellerId = data1[0]._id;
+      console.log(sellerId);
+    }
+
     if (sellerId) {
       const changedData = {
         category,
-        description:[description],
+        description: [description],
         inStock,
         name,
         offerPrice,
         price,
         sellerId,
-        image: [preview.img1 || "", preview.img2 || "", preview.img3 || "", preview.img4 || ""],
+        image: [
+          preview.img1 || "",
+          preview.img2 || "",
+          preview.img3 || "",
+          preview.img4 || "",
+        ],
       };
       console.log(changedData);
       const res = await fetch("/api/products", {

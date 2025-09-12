@@ -8,6 +8,7 @@ import { assets } from "../assets/assets";
 import { usePathname } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
+
 const navItems = [
   { name: "Home", href: "/" },
   { name: "All Products", href: "/products" },
@@ -19,12 +20,32 @@ export default function Header2() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState(null);
 
+  // 👇 added states for seller & logout button
+  const [isSeller, setIsSeller] = useState(false);
+  const [showLogOutButton, setShowLogOutButton] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // 👇 moved sessionStorage logic inside useEffect
+  useEffect(() => {
+    const userToken = sessionStorage.getItem("accessToken") || "";
+    if (userToken) {
+      try {
+        const user = jwtDecode(userToken);
+        if (user.isSeller) {
+          setIsSeller(true);
+        }
+        setShowLogOutButton(true);
+      } catch (err) {
+        console.error("Invalid token", err);
+      }
+    }
   }, []);
 
   const containerVariants = {
@@ -71,25 +92,22 @@ export default function Header2() {
 
   const path = usePathname().split("/");
 
-  // show seller dashboard button if the user is logged in and IS A SELLER
-
-  const userToken = sessionStorage.getItem("accessToken") || "";
-  let isSeller = false;
-  let showLogOutButton = false;
-  if (userToken) {
-    const user = jwtDecode(userToken);
-    if (user.isSeller) {
-      isSeller = true;
-    }
-    showLogOutButton = true;
-  }
-
   // logout of account
   const logOutFunction = () => {
     setIsMobileMenuOpen(false);
     sessionStorage.removeItem("accessToken");
     router.refresh();
   };
+
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return <div></div>; // or a loader / placeholder
+  }
   return (
     <>
       {path[1] !== "seller" ? (

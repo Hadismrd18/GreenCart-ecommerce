@@ -104,7 +104,7 @@ export default function SellerDashboard({ children }) {
             <div className="mx-auto max-w-6xl space-y-4 sm:space-y-6">
               <div className="px-2 sm:px-0">
                 <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-                  Welcome {seller.name}
+                  Welcome {sellerName}
                 </h1>
                 <p className="text-muted-foreground text-sm sm:text-base">
                   Here&apos;s what&apos;s happening with your platform today.
